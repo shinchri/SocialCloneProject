@@ -9,10 +9,7 @@
 			<span class="group-name">in <a href="#">{{ post.group.name }}</a></span>
 			{% endif %}
 		</h5>
-
-
-
-
+    
 		<div class="media-footer">
 			{% if user.is_authenticated and post.user == user and not hide_delete %}
 				<a href="{% url 'posts:delete' pk=post.pk %}" title="delete" class="btn btn-simple">
