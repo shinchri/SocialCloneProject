@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+# GROUP VIEWS
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse
