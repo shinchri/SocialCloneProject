@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from groups.models import Group, GroupMember
+from . import models
 
 class CreateGroup(LoginRequiredMixin, generic.CreateView):
     fields = ('name', 'description')
@@ -24,7 +25,7 @@ class JoinGroup(LoginRequiredMixin, generic.RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         return reverse('groups:single', kwargs={'slug': self.kwargs.get('slug')})
 
-    def get(self, request, *aegs, **kwargs):
+    def get(self, request, *args, **kwargs):
         group = get_object_or_404(Group, slug=self.kwargs.get('slug'))
 
         try:
@@ -41,7 +42,7 @@ class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         return reverse('groups:single', kwargs={'slug': self.kwargs.get('slug')})
 
-    def get(self, request, *aegs, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         try:
             membership = models.GroupMember.objects.filter(
@@ -52,5 +53,5 @@ class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
             messages.warning(self.request, 'Sorry you are not in this group!')
         else:
             membership.delete()
-            membership.success(self.request, 'You have left the group!')
+            messages.success(self.request, 'You have left the group!')
         return super().get(request, *args, **kwargs)

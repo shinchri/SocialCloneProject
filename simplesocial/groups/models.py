@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.urls import reverse
 
 import misaka
 
@@ -14,7 +15,7 @@ register = template.Library()
 
 class Group(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(allow_unicode=True, uniqu=True)
+    slug = models.SlugField(allow_unicode=True, unique=True)
     description = models.TextField(blank=True, default='')
     description_html = models.TextField(blank=True, default='', editable=False)
     members = models.ManyToManyField(User, through="GroupMember")
@@ -35,8 +36,8 @@ class Group(models.Model):
 
 
 class GroupMember(models.Model):
-    group = models.ForeignKey(Group, related_name="membership")
-    user = models.ForeignKey(User, related_name="user_groups")
+    group = models.ForeignKey(Group, related_name="membership", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="user_groups", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
